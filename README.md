@@ -34,5 +34,5 @@ https://www.wikihow.com/Set-Up-SDL-with-Visual-Studio
 ## Attention 
 ### If you increase the detail of the calculation, the execution time will slow down! <br/> 
 
-## Screenshot Application
-![Screenshot](screenshot?raw=true "Application Screenshot")
+## Screenshot <br />
+![Screenshot](screenshot.jpg?raw=true  "Application Screenshot")
