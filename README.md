@@ -15,7 +15,7 @@ https://www.wikihow.com/Set-Up-SDL-with-Visual-Studio
 
 ### The Project should now compile!
 
-# Usage
+## Usage
 
 ### Copy the SDL2.dll in the Release - Folder were the .exe is located. Now just start the .exe File of the Release Folder. The Mandelbrot Window should open and you can start to use the controls below to navigate through the Picture and explore the complex plane. :satisfied: 
  
@@ -31,5 +31,8 @@ https://www.wikihow.com/Set-Up-SDL-with-Visual-Studio
 ### Press "up" &rarr; The details of the calculation will get better <br/>
 ### Press "down" &rarr; The details of the calculation will get worse <br/>
 
-# Attention 
-### If you increase the detail of the calculation, the execution time will slow down! 
+## Attention 
+### If you increase the detail of the calculation, the execution time will slow down! <br/> 
+
+## Screenshot Application
+![Screenshot](screenshot?raw=true "Application Screenshot")
