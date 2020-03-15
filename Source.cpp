@@ -1,3 +1,4 @@
+// ReSharper disable CppClangTidyCppcoreguidelinesProTypeMemberInit
 #include "SDL.h"
 #include <iostream>
 #include <fstream>
@@ -149,19 +150,22 @@ Color calculatePixel(const unsigned int x, const unsigned int y, const double ra
 		}
 	}
 
-	Color c = Color(0, 0, 0);
+	const auto c = Color(0, 0, 0);
 	return c; 
 }
 
 void reloadImage(const double rangeX, const double rangeY, const double middleX, const double middleY, const int maxIteration)
 {
-	auto start = std::chrono::high_resolution_clock::now();
+	const auto start = std::chrono::high_resolution_clock::now();
+	const auto forWidth = static_cast<int>(width);
+	const auto forHeight = static_cast<int>(height); 
+	
 	#pragma omp parallel num_threads(8)
 	{
 		#pragma omp for
-		for (int x = 0; x < (int)width; x++)
+		for (int x = 0; x < forWidth; x++)
 		{
-			for (int y = 0; y < (int)height; y++)
+			for (int y = 0; y < forHeight; y++)
 			{
 				const auto pixelId = y * width + x;
 				const auto pixel = calculatePixel(x, y, rangeX, rangeY, middleX, middleY, maxIteration);
@@ -170,9 +174,9 @@ void reloadImage(const double rangeX, const double rangeY, const double middleX,
 			}
 		}
 	}
-	auto stop = std::chrono::high_resolution_clock::now();
+	const auto stop = std::chrono::high_resolution_clock::now();
 
-	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+	const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 
 	std::stringstream ss;
 
@@ -230,6 +234,7 @@ unsigned char* getCharDataFromColor()
 SDL_Surface* getOptimizedSurface(const char* filePath,  SDL_Surface *windowSurface)
 {
 	SDL_Surface* optimizedSurface = nullptr;
+	
 	//SDL_RWops* rw = SDL_RWFromMem(&getCharDataFromColor()[0], height*width);
 	//SDL_Surface* surface = SDL_LoadBMP_RW(rw, 1);
 
@@ -300,21 +305,24 @@ int main(int argc, char* argv[])
 	auto isRunning = true;
 	SDL_Event ev;
 
-	
 	while(isRunning)
 	{
+		//this is needed for the navigation of the picture
 		LAST = NOW;
 		NOW = SDL_GetPerformanceCounter();
-
-		deltaTime = static_cast<double>((NOW - LAST) * 1000 / static_cast<double>(SDL_GetPerformanceFrequency()));
+		deltaTime = static_cast<double>(static_cast<double>((NOW - LAST) * 1000) / static_cast<double>(SDL_GetPerformanceFrequency()));
 		
+		//controls to navigate in the picture 
 		while(SDL_PollEvent(&ev) != 0)
 		{
+			//the x for window closed is pressed 
 			if (ev.type == SDL_QUIT)
 				isRunning = false;
+			//keyboard buttons events
 			else if(ev.type == SDL_KEYDOWN)
 			{
 				int newMaxIteration;
+
 				switch(ev.key.keysym.sym)
 				{
 					case SDLK_PAGEUP:
@@ -367,9 +375,7 @@ int main(int argc, char* argv[])
 				currentImage = getOptimizedSurface("TestImage.bmp", windowSurface);
 				SDL_BlitScaled(currentImage, nullptr, windowSurface, &drawingRect);
 			}
-
 		}
-
 		SDL_UpdateWindowSurface(window);
 	}
 	
